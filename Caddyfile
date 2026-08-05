@@ -1,0 +1,37 @@
+# global options
+{
+	admin off # tidak perlu admin api di lingkungan railway
+	persist_config off # storage tidak persisten
+	auto_https off # railway yang menangani https, jika aktif malah bermasalah
+	# runtime logs
+	log {
+		format json
+	}
+	# server options
+	servers {
+		trusted_proxies static private_ranges 100.0.0.0/8 # percayai proxy railway
+	}
+}
+
+# site block, listen di $PORT yang otomatis diberikan railway
+:{$PORT:3000} {
+	# access logs
+	log {
+		format json
+	}
+
+	# health check untuk railway
+	rewrite /health /*
+
+	# serve dari folder 'dist' (hasil build vite)
+	root * dist
+
+	# aktifkan gzip
+	encode gzip
+
+	# serve file statis dari 'dist'
+	file_server
+
+	# kalau path tidak ditemukan, arahkan ke 'index.html' untuk client-side routing
+	try_files {path} /index.html
+}
