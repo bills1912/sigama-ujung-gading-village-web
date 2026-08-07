@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import PromoPopup from './components/PromoPopup';
+import SupportBanner from './components/SupportBanner';
 
 // Setiap halaman dimuat sebagai chunk terpisah (route-based code splitting)
 // supaya pengunjung hanya mengunduh JS untuk halaman yang sedang dibuka.
@@ -30,6 +31,7 @@ export default function App() {
       <PromoPopup />
       <div className="min-h-screen flex flex-col">
         <Navbar />
+        <SupportBanner />
         <main className="flex-1">
           <Suspense fallback={<PageFallback />}>
             <Routes>
