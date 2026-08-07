@@ -209,3 +209,29 @@
     transition: none !important;
   }
 }
+
+/* ============ Popup promosi ============ */
+@keyframes popupBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes popupCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.popup-backdrop {
+  animation: popupBackdropIn 0.25s ease both;
+}
+.popup-card {
+  animation: popupCardIn 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}

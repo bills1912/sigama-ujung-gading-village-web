@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import PromoPopup from './components/PromoPopup';
 
 // Setiap halaman dimuat sebagai chunk terpisah (route-based code splitting)
 // supaya pengunjung hanya mengunduh JS untuk halaman yang sedang dibuka.
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <PromoPopup />
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">
