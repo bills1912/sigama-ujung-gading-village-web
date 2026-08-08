@@ -8,13 +8,16 @@
 export const VILLAGE = {
   nama: 'Desa Sigama Ujung Gading',
   kecamatan: 'Kecamatan Padang Bolak',
-  kabupaten: 'Kabupaten Padang Lawas',
+  kabupaten: 'Kabupaten Padang Lawas Utara',
   provinsi: 'Sumatera Utara',
-  kodePos: '22761',
+  kodeDesa: '1220042063',
+  kodePos: '-',
   tagline: 'Menuju desa mandiri, transparan, dan sejahtera berbasis potensi perkebunan rakyat di kaki Bukit Barisan.',
-  kepalaDesa: 'Ali Sutan Harahap',
+  kepalaDesa: 'Al Afgani Saparuddin Harahap',
   sambutan: 'Selamat datang di kanal informasi resmi Desa Sigama Ujung Gading. Website ini kami hadirkan sebagai wujud keterbukaan informasi publik — mulai dari agenda kegiatan, struktur pemerintahan, pengelolaan Anggaran Pendapatan dan Belanja Desa (APBDes), produk hukum desa, hingga data kependudukan. Kami mengundang seluruh warga untuk turut memantau dan berpartisipasi dalam pembangunan desa.',
-  stats: { penduduk: 2340, luas: 18.4, dusun: 4, tahunBentuk: 1987 },
+  // penduduk & luas bersumber dari Kuesioner IDM 2024 (lihat IDM_DATA di bawah);
+  // dusun & tahunBentuk belum tercatat di kuesioner sumber — sesuaikan bila tersedia.
+  stats: { penduduk: 983, luas: 8.5, dusun: 4, tahunBentuk: 1987 },
   visi: 'Terwujudnya Desa Sigama Ujung Gading yang mandiri secara ekonomi melalui optimalisasi hasil perkebunan rakyat, berpemerintahan bersih dan transparan, serta masyarakat yang guyub dan sejahtera.',
   misi: [
     'Meningkatkan tata kelola pemerintahan desa yang partisipatif, transparan, dan akuntabel.',
@@ -24,9 +27,9 @@ export const VILLAGE = {
     'Melestarikan gotong royong dan kearifan lokal sebagai fondasi kehidupan bermasyarakat.',
   ],
   kontak: {
-    alamat: 'Kantor Desa Sigama Ujung Gading, Kecamatan Padang Bolak, Kabupaten Padang Lawas, Sumatera Utara 22761',
+    alamat: 'Kantor Desa Sigama Ujung Gading, Kecamatan Padang Bolak, Kabupaten Padang Lawas Utara, Sumatera Utara',
     telepon: '(0636) 123-4567',
-    email: 'desaSigama Ujung Gading@padanglawaskab.go.id',
+    email: 'sigamaujunggading@gmail.com',
     jamLayanan: 'Senin–Jumat, 08.00–16.00 WIB',
   },
 };
@@ -169,14 +172,14 @@ export const CATEGORY_STYLE = {
 };
 
 export const AGENDA = [
-  { tanggal: '2026-08-06', waktu: '09:00', judul: 'Musyawarah Desa: Pembahasan Perubahan APBDes 2026', kategori: 'Pemerintahan', lokasi: 'Balai Desa Sigama Ujung Gading' },
+  { tanggal: '2026-08-06', waktu: '09:00', judul: 'Musyawarah Desa: Pembahasan Perubahan APBDes 2026', kategori: 'Pemerintahan', lokasi: 'Balai Desa Sosopan' },
   { tanggal: '2026-08-10', waktu: '08:00', judul: 'Gotong Royong Pembersihan Saluran Irigasi', kategori: 'Pembangunan', lokasi: 'Dusun II' },
   { tanggal: '2026-08-14', waktu: '13:00', judul: 'Posyandu Balita & Lansia Bulanan', kategori: 'PKK & Posyandu', lokasi: 'Poskesdes Desa' },
   { tanggal: '2026-08-17', waktu: '07:00', judul: 'Upacara Peringatan HUT Kemerdekaan RI Ke-81', kategori: 'Pemerintahan', lokasi: 'Lapangan Desa' },
   { tanggal: '2026-08-20', waktu: '19:30', judul: 'Pengajian Rutin Malam Jumat', kategori: 'Keagamaan', lokasi: 'Masjid Nurul Huda' },
-  { tanggal: '2026-08-24', waktu: '09:00', judul: 'Pelatihan Pengolahan Hasil Nilam dan Kopi', kategori: 'Sosial & Kemasyarakatan', lokasi: 'Balai Desa Sigama Ujung Gading' },
+  { tanggal: '2026-08-24', waktu: '09:00', judul: 'Pelatihan Pengolahan Hasil Nilam dan Kopi', kategori: 'Sosial & Kemasyarakatan', lokasi: 'Balai Desa Sosopan' },
   { tanggal: '2026-08-29', waktu: '15:30', judul: 'Turnamen Bola Voli Antar Dusun', kategori: 'Pemuda & Olahraga', lokasi: 'Lapangan Dusun I' },
-  { tanggal: '2026-09-02', waktu: '09:00', judul: 'Rapat Koordinasi BPD dan Perangkat Desa', kategori: 'Pemerintahan', lokasi: 'Balai Desa Sigama Ujung Gading' },
+  { tanggal: '2026-09-02', waktu: '09:00', judul: 'Rapat Koordinasi BPD dan Perangkat Desa', kategori: 'Pemerintahan', lokasi: 'Balai Desa Sosopan' },
 ];
 
 export const TAHUN_LIST = [2024, 2025, 2026];
@@ -230,32 +233,156 @@ export const JDIH_DOCS = [
   { nomor: '03/Perkades/2024', judul: 'Pengelolaan dan Pemeliharaan Aset Desa', kategori: 'Peraturan Kepala Desa', tanggal: '14 Mei 2024' },
 ];
 
-export const DEMOGRAFI = {
-  gender: [
-    { name: 'Laki-laki', value: 1205 },
-    { name: 'Perempuan', value: 1135 },
+/* =====================================================================
+   DATA DESA (IDM) — bersumber dari Kuesioner Indeks Desa Membangun (IDM)
+   yang diisi Pemerintah Desa Sigama Ujung Gading, tahun 2021–2024.
+   Tahun 2025 menyusul (belum diisi/diserahkan saat data ini disusun).
+
+   Struktur usia & mata pencaharian memakai kategori sebagaimana tercatat
+   di kuesioner tiap tahun (definisi kelompok usia berubah mulai 2024
+   mengikuti pembaruan format kuesioner nasional), sehingga ditampilkan
+   per tahun, bukan dipaksakan sama antar tahun.
+===================================================================== */
+
+export const IDM_TAHUN_LIST = [2021, 2022, 2023, 2024];
+export const IDM_TAHUN_MENYUSUL = 2025;
+
+export const IDM_DATA = {
+  2021: {
+    ringkasan: { totalPenduduk: 930, lk: 476, pr: 454, kk: 222, kkPerempuan: 25, keluargaMiskin: 69, luasWilayah: 250 },
+    usia: [
+      { name: '<1 tahun', value: 24 },
+      { name: '1-4 tahun', value: 78 },
+      { name: '5-14 tahun', value: 284 },
+      { name: '15-39 tahun', value: 348 },
+      { name: '40-64 tahun', value: 128 },
+      { name: '65 tahun ke atas', value: 68 },
+    ],
+    pekerjaan: [
+      { name: 'Petani/Pekebun', value: 848 },
+      { name: 'Buruh Tani', value: 0 },
+      { name: 'PNS/Aparatur', value: 24 },
+      { name: 'Pegawai Swasta', value: 22 },
+      { name: 'Tenaga Kesehatan', value: 9 },
+      { name: 'Lainnya', value: 33 },
+    ],
+  },
+  2022: {
+    ringkasan: { totalPenduduk: 976, lk: 479, pr: 497, kk: 280, kkPerempuan: 30, keluargaMiskin: 136, luasWilayah: 8.5 },
+    usia: [
+      { name: '<1 tahun', value: 24 },
+      { name: '1-4 tahun', value: 78 },
+      { name: '5-14 tahun', value: 284 },
+      { name: '15-39 tahun', value: 348 },
+      { name: '40-64 tahun', value: 128 },
+      { name: '65 tahun ke atas', value: 68 },
+    ],
+    pekerjaan: [
+      { name: 'Petani/Pekebun', value: 976 },
+      { name: 'Buruh Tani', value: 33 },
+      { name: 'PNS/Aparatur', value: 24 },
+      { name: 'Pegawai Swasta', value: 15 },
+      { name: 'Tenaga Kesehatan', value: 9 },
+      { name: 'Lainnya', value: 33 },
+    ],
+  },
+  2023: {
+    ringkasan: { totalPenduduk: 983, lk: 476, pr: 507, kk: 260, kkPerempuan: 60, keluargaMiskin: 200, luasWilayah: 8.5 },
+    usia: [
+      { name: '<1 tahun', value: 24 },
+      { name: '1-4 tahun', value: 78 },
+      { name: '5-14 tahun', value: 284 },
+      { name: '15-39 tahun', value: 348 },
+      { name: '40-64 tahun', value: 128 },
+      { name: '65 tahun ke atas', value: 68 },
+    ],
+    pekerjaan: [
+      { name: 'Petani/Pekebun', value: 976 },
+      { name: 'Buruh Tani', value: 0 },
+      { name: 'PNS/Aparatur', value: 24 },
+      { name: 'Pegawai Swasta', value: 15 },
+      { name: 'Tenaga Kesehatan', value: 9 },
+      { name: 'Lainnya', value: 33 },
+    ],
+  },
+  2024: {
+    ringkasan: { totalPenduduk: 983, lk: 476, pr: 507, kk: 260, kkPerempuan: 60, keluargaMiskin: 200, luasWilayah: 8.5 },
+    usia: [
+      { name: '<3 tahun', value: 24 },
+      { name: '3-6 tahun', value: 78 },
+      { name: '7-12 tahun', value: 284 },
+      { name: '13-15 tahun', value: 348 },
+      { name: '16-18 tahun', value: 128 },
+      { name: '19-59 tahun', value: 0 },
+      { name: '>59 tahun', value: 68 },
+    ],
+    pekerjaan: [
+      { name: 'Petani/Pekebun', value: 976 },
+      { name: 'Buruh Tani', value: 0 },
+      { name: 'PNS/Aparatur', value: 24 },
+      { name: 'Pegawai Swasta', value: 15 },
+      { name: 'Tenaga Kesehatan', value: 9 },
+      { name: 'Lainnya', value: 33 },
+    ],
+  },
+};
+
+/** Skor Indeks Desa Membangun (IDM) 2024 — baru tersedia mulai tahun ini
+ *  di kuesioner sumber (2021-2023 belum menyertakan rubrik skor). */
+export const IDM_SKOR_2024 = {
+  tahun: 2024,
+  total: 351,
+  dimensi: [
+    {
+      nama: 'Layanan Dasar',
+      skor: 110,
+      sub: [
+        { nama: 'Pendidikan', skor: 27 },
+        { nama: 'Kesehatan', skor: 62 },
+        { nama: 'Utilitas Dasar', skor: 21 },
+      ],
+    },
+    {
+      nama: 'Sosial',
+      skor: 45,
+      sub: [
+        { nama: 'Aktivitas', skor: 41 },
+        { nama: 'Fasilitas Masyarakat', skor: 4 },
+      ],
+    },
+    {
+      nama: 'Ekonomi',
+      skor: 76,
+      sub: [
+        { nama: 'Produksi Desa', skor: 12 },
+        { nama: 'Fasilitas Pendukung Ekonomi', skor: 64 },
+      ],
+    },
+    {
+      nama: 'Lingkungan',
+      skor: 43,
+      sub: [
+        { nama: 'Pengelolaan Lingkungan', skor: 38 },
+        { nama: 'Penanggulangan Bencana', skor: 5 },
+      ],
+    },
+    {
+      nama: 'Aksesibilitas',
+      skor: 45,
+      sub: [
+        { nama: 'Kondisi Akses Jalan', skor: 19 },
+        { nama: 'Kemudahan Akses', skor: 26 },
+      ],
+    },
+    {
+      nama: 'Tata Kelola Pemerintahan Desa',
+      skor: 32,
+      sub: [
+        { nama: 'Kelembagaan dan Pelayanan Desa', skor: 24 },
+        { nama: 'Tata Kelola Keuangan Desa', skor: 8 },
+      ],
+    },
   ],
-  dusun: [
-    { name: 'Dusun I', value: 640 },
-    { name: 'Dusun II', value: 590 },
-    { name: 'Dusun III', value: 560 },
-    { name: 'Dusun IV', value: 550 },
-  ],
-  pendidikan: [
-    { name: 'Belum/Tidak Sekolah', value: 310 },
-    { name: 'Tamat SD', value: 640 },
-    { name: 'Tamat SMP', value: 520 },
-    { name: 'Tamat SMA', value: 610 },
-    { name: 'Diploma/Sarjana', value: 260 },
-  ],
-  mataPencaharian: [
-    { name: 'Petani/Pekebun', value: 1180 },
-    { name: 'Pedagang', value: 220 },
-    { name: 'PNS/Aparatur', value: 95 },
-    { name: 'Buruh/Karyawan', value: 340 },
-    { name: 'Jasa & Lainnya', value: 505 },
-  ],
-  ringkasan: { kk: 612, rt: 16, kepadatan: Math.round(2340 / 18.4) },
 };
 
 export const NAV_ITEMS = [

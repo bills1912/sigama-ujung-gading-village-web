@@ -5,7 +5,7 @@ import {
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import {
-  TAHUN_LIST, FAKTOR_TAHUN, BASE_PENDAPATAN, BASE_BELANJA, REALISASI_BASE, CHART_COLORS,
+  TAHUN_LIST, FAKTOR_TAHUN, BASE_PENDAPATAN, BASE_BELANJA, REALISASI_BASE, CHART_COLORS, VILLAGE,
 } from '../data/village';
 import { PageHeader, StatCard } from '../components/ui';
 import { formatRupiah, formatRupiahSingkat } from '../lib/format';
@@ -29,7 +29,7 @@ export default function Anggaran() {
       <PageHeader
         eyebrow="Transparansi Fiskal"
         title="Anggaran Pendapatan & Belanja Desa"
-        description="Ringkasan APBDes Desa Sosopan sebagai bentuk akuntabilitas pengelolaan keuangan desa kepada warga."
+        description={`Ringkasan APBDes ${VILLAGE.nama} sebagai bentuk akuntabilitas pengelolaan keuangan desa kepada warga.`}
       />
 
       <section className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">

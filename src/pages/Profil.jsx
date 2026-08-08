@@ -22,7 +22,7 @@ export default function Profil() {
       <PageHeader
         eyebrow="Profil Desa"
         title="Pemerintahan, Visi & Misi"
-        description="Mengenal kepemimpinan, arah pembangunan, dan struktur organisasi pemerintahan Desa Sosopan."
+        description={`Mengenal kepemimpinan, arah pembangunan, dan struktur organisasi pemerintahan ${VILLAGE.nama}.`}
       />
 
       <section className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">
@@ -32,7 +32,7 @@ export default function Profil() {
               {VILLAGE.kepalaDesa.split(' ').map((w) => w[0]).slice(0, 2).join('')}
             </div>
             <div className="mt-4 font-semibold text-[15px] text-pine-deep">{VILLAGE.kepalaDesa}</div>
-            <div className="text-xs text-mist mb-4">Kepala Desa Sosopan</div>
+            <div className="text-xs text-mist mb-4">Kepala {VILLAGE.nama}</div>
             <p className="text-[13.5px] leading-relaxed text-mist">{VILLAGE.sambutan}</p>
           </div>
 
@@ -59,7 +59,7 @@ export default function Profil() {
         <div className="mt-16">
           <h2 className="font-display text-2xl md:text-3xl font-semibold text-pine-deep">Struktur Organisasi</h2>
           <p className="text-[13.5px] text-mist max-w-2xl mt-2 mb-6">
-            Desa Sosopan memiliki beberapa lembaga dengan bagan kepengurusan masing-masing. Pilih lembaga di bawah
+            {VILLAGE.nama} memiliki beberapa lembaga dengan bagan kepengurusan masing-masing. Pilih lembaga di bawah
             untuk melihat susunannya.
           </p>
 

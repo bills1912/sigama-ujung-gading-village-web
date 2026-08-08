@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Search, Download } from 'lucide-react';
-import { JDIH_DOCS, JDIH_KATEGORI, JDIH_STYLE } from '../data/village';
+import { JDIH_DOCS, JDIH_KATEGORI, JDIH_STYLE, VILLAGE } from '../data/village';
 import { PageHeader, Badge } from '../components/ui';
 
 export default function Jdih() {
@@ -21,7 +21,7 @@ export default function Jdih() {
       <PageHeader
         eyebrow="Jaringan Dokumentasi & Informasi Hukum"
         title="Produk Hukum Desa (JDIH)"
-        description="Arsip Peraturan Desa, Peraturan Kepala Desa, dan Keputusan resmi yang berlaku di Desa Sosopan."
+        description={`Arsip Peraturan Desa, Peraturan Kepala Desa, dan Keputusan resmi yang berlaku di ${VILLAGE.nama}.`}
       />
 
       <section className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">

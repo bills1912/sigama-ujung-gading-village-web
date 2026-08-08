@@ -1,4 +1,4 @@
-import { VILLAGE, DEMOGRAFI } from '../data/village';
+import { VILLAGE, IDM_DATA, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_SKOR_2024 } from '../data/village';
 
 /** Format angka dengan pemisah ribuan gaya Indonesia. */
 const n = (v) => v.toLocaleString('id-ID');
@@ -20,54 +20,124 @@ function tableFromCategory(sheetName, kolomPertama, data) {
   };
 }
 
-/** Menyusun seluruh tabel data desa (dipakai bersama oleh tampilan tabel di
- *  halaman, ekspor data Excel/CSV, dan laporan Word/Excel). Satu sumber
- *  kebenaran — kalau DEMOGRAFI berubah, semua ikut berubah otomatis. */
-export function buildDataDesaTables() {
+/** Menyusun tabel data desa untuk SATU tahun terpilih, bersumber dari
+ *  Kuesioner IDM (lihat IDM_DATA di src/data/village.js). Dipakai bersama
+ *  oleh tampilan tabel di halaman, ekspor data Excel/CSV, dan laporan
+ *  Word/PDF — satu sumber kebenaran per tahun. */
+export function buildDataDesaTables(year) {
+  const d = IDM_DATA[year];
+  if (!d) return [];
+  const { ringkasan: r } = d;
+  const kepadatan = r.luasWilayah ? Math.round(r.totalPenduduk / r.luasWilayah) : null;
+
   const ringkasan = {
     key: 'ringkasan',
     sheetName: 'Ringkasan',
     header: ['Indikator', 'Nilai'],
     rows: [
-      ['Jumlah Penduduk', `${n(VILLAGE.stats.penduduk)} jiwa`],
-      ['Jumlah Kepala Keluarga', `${n(DEMOGRAFI.ringkasan.kk)} KK`],
-      ['Kepadatan Penduduk', `${n(DEMOGRAFI.ringkasan.kepadatan)} jiwa/km²`],
-      ['Luas Wilayah', `${VILLAGE.stats.luas} km²`],
-      ['Jumlah Dusun', `${VILLAGE.stats.dusun} dusun`],
-      ['Jumlah Rukun Tetangga (RT)', `${DEMOGRAFI.ringkasan.rt} RT`],
+      ['Jumlah Penduduk', `${n(r.totalPenduduk)} jiwa`],
+      ['Jumlah Kepala Keluarga', `${n(r.kk)} KK`],
+      ['Kepala Keluarga Perempuan', `${n(r.kkPerempuan)} KK`],
+      ['Keluarga Miskin', `${n(r.keluargaMiskin)} KK`],
+      ['Kepadatan Penduduk', kepadatan ? `${n(kepadatan)} jiwa/km²` : '-'],
+      ['Luas Wilayah', `${r.luasWilayah} km²`],
     ],
     rawRows: [
-      ['Jumlah Penduduk', VILLAGE.stats.penduduk],
-      ['Jumlah Kepala Keluarga', DEMOGRAFI.ringkasan.kk],
-      ['Kepadatan Penduduk (jiwa/km²)', DEMOGRAFI.ringkasan.kepadatan],
-      ['Luas Wilayah (km²)', VILLAGE.stats.luas],
-      ['Jumlah Dusun', VILLAGE.stats.dusun],
-      ['Jumlah Rukun Tetangga (RT)', DEMOGRAFI.ringkasan.rt],
+      ['Jumlah Penduduk', r.totalPenduduk],
+      ['Jumlah Kepala Keluarga', r.kk],
+      ['Kepala Keluarga Perempuan', r.kkPerempuan],
+      ['Keluarga Miskin', r.keluargaMiskin],
+      ['Kepadatan Penduduk (jiwa/km²)', kepadatan],
+      ['Luas Wilayah (km²)', r.luasWilayah],
     ],
   };
 
-  const genderTable = tableFromCategory('Jenis Kelamin', 'Jenis Kelamin', DEMOGRAFI.gender);
-  const dusunTable = tableFromCategory('Penduduk per Dusun', 'Dusun', DEMOGRAFI.dusun);
-  const pendidikanTable = tableFromCategory('Tingkat Pendidikan', 'Tingkat Pendidikan', DEMOGRAFI.pendidikan);
-  const mataPencaharianTable = tableFromCategory('Mata Pencaharian', 'Jenis Pekerjaan', DEMOGRAFI.mataPencaharian);
+  const genderTable = tableFromCategory('Jenis Kelamin', 'Jenis Kelamin', [
+    { name: 'Laki-laki', value: r.lk },
+    { name: 'Perempuan', value: r.pr },
+  ]);
+  const usiaTable = tableFromCategory('Struktur Usia', 'Kelompok Usia', d.usia);
+  const pekerjaanTable = tableFromCategory('Mata Pencaharian', 'Jenis Pekerjaan', d.pekerjaan);
 
-  return [ringkasan, genderTable, dusunTable, pendidikanTable, mataPencaharianTable];
+  return [ringkasan, genderTable, usiaTable, pekerjaanTable];
 }
 
-/** Info identitas desa dipakai di kop laporan. */
-export function reportMeta() {
+/** Format daftar tahun jadi label ringkas: berurutan penuh -> "2021-2024",
+ *  tidak berurutan/sebagian -> "2021, 2023" (dipisah koma). */
+export function formatYearsLabel(years) {
+  const sorted = [...years].sort((a, b) => a - b);
+  const consecutive = sorted.length > 1 && sorted.every((y, i) => i === 0 || y === sorted[i - 1] + 1);
+  return consecutive ? `${sorted[0]}-${sorted[sorted.length - 1]}` : sorted.join(', ');
+}
+
+/** Tabel tren antar tahun — satu baris per indikator, satu kolom per tahun
+ *  TERPILIH (bebas dipilih pengguna, tidak harus seluruh IDM_TAHUN_LIST).
+ *  Dipakai untuk mode ekspor "Series". */
+export function buildSeriesTables(years = IDM_TAHUN_LIST) {
+  const sorted = [...years].sort((a, b) => a - b);
+  const header = ['Indikator', ...sorted.map(String)];
+  const metrics = [
+    ['Jumlah Penduduk', (r) => r.totalPenduduk],
+    ['Laki-laki', (r) => r.lk],
+    ['Perempuan', (r) => r.pr],
+    ['Jumlah Kepala Keluarga', (r) => r.kk],
+    ['Kepala Keluarga Perempuan', (r) => r.kkPerempuan],
+    ['Keluarga Miskin', (r) => r.keluargaMiskin],
+    ['Luas Wilayah (km²)', (r) => r.luasWilayah],
+  ];
+  const rows = metrics.map(([label, get]) => [label, ...sorted.map((y) => n(get(IDM_DATA[y].ringkasan)))]);
+  const rawRows = metrics.map(([label, get]) => [label, ...sorted.map((y) => get(IDM_DATA[y].ringkasan))]);
+
+  return [
+    {
+      key: 'tren-antar-tahun',
+      sheetName: `Tren ${formatYearsLabel(sorted)}`,
+      header,
+      rows,
+      rawRows,
+    },
+  ];
+}
+
+/** Tabel skor Indeks Desa Membangun (IDM) 2024 — dimensi & sub-dimensi. */
+export function buildIdmSkorTable() {
+  const rows = [];
+  IDM_SKOR_2024.dimensi.forEach((dim) => {
+    rows.push([dim.nama, n(dim.skor)]);
+    dim.sub.forEach((s) => rows.push([`— ${s.nama}`, n(s.skor)]));
+  });
+  rows.push(['TOTAL SKOR', n(IDM_SKOR_2024.total)]);
+  return [
+    {
+      key: 'idm-skor-2024',
+      sheetName: 'Skor IDM 2024',
+      header: ['Dimensi', 'Skor'],
+      rows,
+      rawRows: rows,
+    },
+  ];
+}
+
+/** Info identitas desa dipakai di kop laporan.
+ *  mode: 'tahun' (satu titik waktu) | 'series' (beberapa tahun berdampingan)
+ *  seriesYears: daftar tahun terpilih saat mode === 'series' (bebas dipilih pengguna). */
+export function reportMeta(mode = 'tahun', year = IDM_TAHUN_LIST[IDM_TAHUN_LIST.length - 1], seriesYears = IDM_TAHUN_LIST) {
   const tanggal = new Date().toLocaleDateString('id-ID', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   });
+  const sortedSeriesYears = [...seriesYears].sort((a, b) => a - b);
+  const periode = mode === 'series' ? `Data Tahun ${formatYearsLabel(sortedSeriesYears)}` : `Data Tahun ${year}`;
   return {
     judul: 'Laporan Data Makro Desa',
+    periode,
     nama: VILLAGE.nama,
     wilayah: `${VILLAGE.kecamatan}, ${VILLAGE.kabupaten}, ${VILLAGE.provinsi}`,
     tanggal,
     catatan:
-      'Data pada laporan ini bersifat ilustrasi dan perlu disesuaikan dengan hasil pemutakhiran data desa (DTSEN/Profil Desa) terbaru.',
+      `Data bersumber dari Kuesioner Indeks Desa Membangun (IDM) tahun ${mode === 'series' ? sortedSeriesYears.join(', ') : year}. ` +
+      `Data tahun ${IDM_TAHUN_MENYUSUL} menyusul. Sesuaikan dengan hasil pemutakhiran data desa terbaru.`,
   };
 }
 

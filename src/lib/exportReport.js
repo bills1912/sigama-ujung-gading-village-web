@@ -1,5 +1,5 @@
 import { downloadBlob } from './download';
-import { buildDataDesaTables, reportMeta, slugify } from './reportData';
+import { reportMeta, slugify } from './reportData';
 
 // Palet warna yang sama seperti di website (lihat @theme di src/index.css)
 // supaya laporan yang diunduh terasa satu identitas dengan situsnya.
@@ -21,7 +21,7 @@ const COLOR = {
  *  package docx) dioper sebagai parameter supaya pemanggil di browser bebas
  *  memuatnya secara lazy (dynamic import) — library ini cukup besar dan
  *  hanya dibutuhkan saat tombol "Unduh Laporan (Word)" benar-benar diklik. */
-export function buildReportDocument(docx, tables = buildDataDesaTables(), meta = reportMeta()) {
+export function buildReportDocument(docx, tables, meta = reportMeta()) {
   const {
     Document, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell,
     WidthType, AlignmentType, BorderStyle, ShadingType, Footer, PageNumber,
@@ -74,6 +74,11 @@ export function buildReportDocument(docx, tables = buildDataDesaTables(), meta =
       alignment: AlignmentType.CENTER,
       spacing: { after: 40 },
       children: [new TextRun({ text: meta.wilayah, size: 20, color: COLOR.mist })],
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 40 },
+      children: [new TextRun({ text: meta.periode, bold: true, size: 19, color: COLOR.goldInk })],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
@@ -139,7 +144,7 @@ export function buildReportDocument(docx, tables = buildDataDesaTables(), meta =
 
 /** Unduh laporan-data-desa-*.docx (browser only). Library `docx` baru
  *  dimuat saat fungsi ini dipanggil (dynamic import). */
-export async function exportReportWord(villageName, tables = buildDataDesaTables(), meta = reportMeta()) {
+export async function exportReportWord(villageName, tables, meta = reportMeta()) {
   const docx = await import('docx');
   const doc = buildReportDocument(docx, tables, meta);
   const blob = await docx.Packer.toBlob(doc);

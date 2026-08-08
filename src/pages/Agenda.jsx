@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Clock, MapPin } from 'lucide-react';
-import { AGENDA, AGENDA_KATEGORI, CATEGORY_STYLE } from '../data/village';
+import { AGENDA, AGENDA_KATEGORI, CATEGORY_STYLE, VILLAGE } from '../data/village';
 import { PageHeader, Badge } from '../components/ui';
 import { pecahTanggalId } from '../lib/format';
 
@@ -17,7 +17,7 @@ export default function Agenda() {
       <PageHeader
         eyebrow="Agenda Desa"
         title="Jadwal Kegiatan"
-        description="Informasi kegiatan pemerintahan, pembangunan, keagamaan, dan kemasyarakatan yang berlangsung di Desa Sosopan."
+        description={`Informasi kegiatan pemerintahan, pembangunan, keagamaan, dan kemasyarakatan yang berlangsung di ${VILLAGE.nama}.`}
       />
 
       <section className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">

@@ -46,8 +46,8 @@ export default function Beranda() {
           <div className="animate-fadeUp delay-3 grid grid-cols-2 md:grid-cols-4 gap-3 mt-14 max-w-3xl">
             <StatChip icon={Users} value={VILLAGE.stats.penduduk.toLocaleString('id-ID')} label="Jiwa Penduduk" />
             <StatChip icon={Mountain} value={`${VILLAGE.stats.luas} km²`} label="Luas Wilayah" />
-            <StatChip icon={Building2} value={`${VILLAGE.stats.dusun} Dusun`} label="Wilayah Administratif" />
-            <StatChip icon={CalendarDays} value={VILLAGE.stats.tahunBentuk} label="Tahun Pemekaran" />
+            {/* <StatChip icon={Building2} value={`${VILLAGE.stats.dusun} Dusun`} label="Wilayah Administratif" /> */}
+            {/* <StatChip icon={CalendarDays} value={VILLAGE.stats.tahunBentuk} label="Tahun Pemekaran" /> */}
           </div>
         </div>
 

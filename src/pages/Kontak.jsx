@@ -14,8 +14,8 @@ export default function Kontak() {
     <>
       <PageHeader
         eyebrow="Hubungi Kami"
-        title="Kontak Desa Sosopan"
-        description="Sampaikan pertanyaan, aspirasi, atau kebutuhan layanan administrasi kepada Pemerintah Desa Sosopan."
+        title={`Kontak ${VILLAGE.nama}`}
+        description={`Sampaikan pertanyaan, aspirasi, atau kebutuhan layanan administrasi kepada Pemerintah ${VILLAGE.nama}.`}
       />
 
       <section className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">
@@ -39,7 +39,7 @@ export default function Kontak() {
               <div className="w-14 h-14 rounded-full bg-pine/10 flex items-center justify-center mx-auto">
                 <MapPin size={24} className="text-pine" strokeWidth={1.8} />
               </div>
-              <div className="font-display text-lg font-semibold text-pine-deep mt-4">Kantor Desa Sosopan</div>
+              <div className="font-display text-lg font-semibold text-pine-deep mt-4">Kantor {VILLAGE.nama}</div>
               <p className="text-[13px] text-mist mt-2 max-w-sm mx-auto leading-relaxed">
                 {VILLAGE.kontak.alamat}
               </p>
