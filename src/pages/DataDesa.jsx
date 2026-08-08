@@ -1,12 +1,60 @@
-import { Users, Home as HomeIcon, Building2, ScrollText } from 'lucide-react';
+import { useState } from 'react';
+import {
+  Users, Home as HomeIcon, Building2, ScrollText, FileSpreadsheet, FileText, FileType, Loader2,
+  Square, CheckSquare,
+} from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import { VILLAGE, DEMOGRAFI } from '../data/village';
 import { PageHeader, StatCard } from '../components/ui';
+import DataTable from '../components/DataTable';
+import { buildDataDesaTables } from '../lib/reportData';
+import { exportDataExcel, exportDataCsv } from '../lib/exportData';
+import { exportReportWord } from '../lib/exportReport';
+import { exportReportPdf } from '../lib/exportReportPdf';
 
 export default function DataDesa() {
+  const [generating, setGenerating] = useState(null); // 'word' | 'pdf' | null
+  const tables = buildDataDesaTables();
+
+  // Data mana saja yang disertakan saat ekspor/laporan — defaultnya semua
+  // tercentang, pengguna bebas menyisakan salah satu atau beberapa saja
+  // (mis. hanya untuk profil desa ringkas).
+  const [selectedKeys, setSelectedKeys] = useState(() => new Set(tables.map((t) => t.key)));
+  const selectedTables = tables.filter((t) => selectedKeys.has(t.key));
+  const noneSelected = selectedTables.length === 0;
+
+  const toggleKey = (key) => {
+    setSelectedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+  const selectAll = () => setSelectedKeys(new Set(tables.map((t) => t.key)));
+  const clearAll = () => setSelectedKeys(new Set());
+
+  const handleReportWord = async () => {
+    setGenerating('word');
+    try {
+      await exportReportWord(VILLAGE.nama, selectedTables);
+    } finally {
+      setGenerating(null);
+    }
+  };
+
+  const handleReportPdf = async () => {
+    setGenerating('pdf');
+    try {
+      await exportReportPdf(VILLAGE.nama, selectedTables);
+    } finally {
+      setGenerating(null);
+    }
+  };
+
   return (
     <>
       <PageHeader
@@ -89,6 +137,105 @@ export default function DataDesa() {
         <div className="text-[11.5px] text-mist mt-5">
           Sumber: Data Kependudukan Desa Sosopan — data ilustrasi, sesuaikan dengan hasil pemutakhiran data desa
           (DTSEN/Profil Desa) terbaru.
+        </div>
+
+        {/* ============ Tabel & Unduhan ============ */}
+        <div className="mt-16">
+          <div className="mb-6">
+            <h2 className="font-display text-2xl font-semibold text-pine-deep">Tabel & Unduhan</h2>
+            <p className="text-[13px] text-mist mt-1 max-w-lg">
+              Salin langsung tiap tabel, atau unduh datanya sebagai berkas Excel/CSV. Butuh laporan siap cetak?
+              Unduh dalam format Word atau PDF.
+            </p>
+          </div>
+
+          <div className="card rounded-2xl p-5 mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+              <span className="text-[11px] font-semibold text-mist uppercase tracking-wide">
+                Pilih data untuk diekspor ({selectedTables.length}/{tables.length})
+              </span>
+              <div className="flex gap-4 text-[12px] font-semibold text-pine">
+                <button onClick={selectAll} className="hover:text-pine-deep transition-colors">
+                  Pilih semua
+                </button>
+                <button onClick={clearAll} className="hover:text-pine-deep transition-colors">
+                  Kosongkan
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-5">
+              {tables.map((t) => {
+                const active = selectedKeys.has(t.key);
+                return (
+                  <button
+                    key={t.key}
+                    onClick={() => toggleKey(t.key)}
+                    data-active={active}
+                    aria-pressed={active}
+                    className="chip rounded-full pl-2.5 pr-3.5 py-1.5 text-[12.5px] font-medium inline-flex items-center gap-1.5"
+                  >
+                    {active ? <CheckSquare size={14} /> : <Square size={14} />}
+                    {t.sheetName}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex flex-wrap gap-2.5">
+              <div className="flex items-center gap-1 rounded-full border border-mist-soft bg-white p-1">
+                <span className="pl-2.5 pr-1 text-[10.5px] font-semibold text-mist uppercase tracking-wide">
+                  Data
+                </span>
+                <button
+                  onClick={() => exportDataExcel(VILLAGE.nama, selectedTables)}
+                  disabled={noneSelected}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold text-pine hover:bg-paper-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                >
+                  <FileSpreadsheet size={13} /> Excel
+                </button>
+                <button
+                  onClick={() => exportDataCsv(VILLAGE.nama, selectedTables)}
+                  disabled={noneSelected}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold text-pine hover:bg-paper-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                >
+                  <FileText size={13} /> CSV
+                </button>
+              </div>
+
+              <div className="flex items-center gap-1 rounded-full border border-mist-soft bg-white p-1">
+                <span className="pl-2.5 pr-1 text-[10.5px] font-semibold text-mist uppercase tracking-wide">
+                  Laporan
+                </span>
+                <button
+                  onClick={handleReportWord}
+                  disabled={noneSelected || generating === 'word'}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold text-pine hover:bg-paper-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                >
+                  {generating === 'word' ? <Loader2 size={13} className="animate-spin" /> : <FileText size={13} />}
+                  Word
+                </button>
+                <button
+                  onClick={handleReportPdf}
+                  disabled={noneSelected || generating === 'pdf'}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold text-pine hover:bg-paper-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                >
+                  {generating === 'pdf' ? <Loader2 size={13} className="animate-spin" /> : <FileType size={13} />}
+                  PDF
+                </button>
+              </div>
+            </div>
+
+            {noneSelected && (
+              <p className="text-[12px] text-clay mt-3">Pilih minimal satu data terlebih dahulu untuk mengekspor.</p>
+            )}
+          </div>
+
+          <div className="grid gap-5">
+            {tables.map((t) => (
+              <DataTable key={t.key} title={t.sheetName} header={t.header} rows={t.rows} />
+            ))}
+          </div>
         </div>
       </section>
     </>
