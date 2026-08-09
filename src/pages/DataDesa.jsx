@@ -7,7 +7,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, LineChart, Line,
 } from 'recharts';
-import { VILLAGE, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_DATA, IDM_SKOR_2024 } from '../data/village';
+import { VILLAGE, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_DATA, IDM_SKOR_2024, IDM_SUMBER } from '../data/village';
 import { PageHeader, StatCard } from '../components/ui';
 import DataTable from '../components/DataTable';
 import { buildDataDesaTables, buildSeriesTables, buildIdmSkorTable, reportMeta, formatYearsLabel } from '../lib/reportData';
@@ -113,7 +113,7 @@ export default function DataDesa() {
       <PageHeader
         eyebrow="Statistik Desa"
         title="Data Makro Desa"
-        description={`Data kependudukan ${VILLAGE.nama} bersumber dari Kuesioner Indeks Desa Membangun (IDM), tahun ${IDM_TAHUN_LIST[0]}–${LATEST_YEAR}. Data tahun ${IDM_TAHUN_MENYUSUL} menyusul.`}
+        description={`Data kependudukan ${VILLAGE.nama} bersumber dari Kuesioner Indeks Desa Membangun (IDM) tahun ${IDM_TAHUN_LIST[0]}–2024 dan Data Pokok Desa (Prodeskel Kemendagri) tahun 2025. Data tahun ${IDM_TAHUN_MENYUSUL} menyusul.`}
       />
 
       <section className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">
@@ -177,17 +177,26 @@ export default function DataDesa() {
 
           <div className="card rounded-2xl p-6 md:p-7 lg:col-span-2">
             <div className="font-semibold text-[14px] text-pine-deep">Struktur Usia Penduduk — {selectedYear}</div>
-            <div style={{ width: '100%', height: 260 }} className="mt-4">
-              <ResponsiveContainer>
-                <BarChart data={tahunData.usia} layout="vertical" margin={{ left: 8, right: 24, top: 4, bottom: 4 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#D3DACD" horizontal={false} />
-                  <XAxis type="number" tick={AXIS_STYLE} axisLine={false} tickLine={false} />
-                  <YAxis type="category" dataKey="name" width={110} tick={{ fontSize: 11, fill: '#1B241C' }} axisLine={false} tickLine={false} />
-                  <Tooltip formatter={(v) => v.toLocaleString('id-ID') + ' jiwa'} contentStyle={TOOLTIP_STYLE} />
-                  <Bar dataKey="value" radius={[0, 6, 6, 0]} fill="#BE9756" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            {tahunData.usia.length > 0 ? (
+              <div style={{ width: '100%', height: 260 }} className="mt-4">
+                <ResponsiveContainer>
+                  <BarChart data={tahunData.usia} layout="vertical" margin={{ left: 8, right: 24, top: 4, bottom: 4 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#D3DACD" horizontal={false} />
+                    <XAxis type="number" tick={AXIS_STYLE} axisLine={false} tickLine={false} />
+                    <YAxis type="category" dataKey="name" width={110} tick={{ fontSize: 11, fill: '#1B241C' }} axisLine={false} tickLine={false} />
+                    <Tooltip formatter={(v) => v.toLocaleString('id-ID') + ' jiwa'} contentStyle={TOOLTIP_STYLE} />
+                    <Bar dataKey="value" radius={[0, 6, 6, 0]} fill="#BE9756" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-[260px] mt-4 flex items-center justify-center text-center px-6">
+                <p className="text-[12.5px] text-mist max-w-xs">
+                  Rincian struktur usia {selectedYear} belum tersedia — data pada sumber resmi tidak konsisten
+                  (jumlah kelompok usia melebihi total penduduk), sehingga tidak ditampilkan.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="card rounded-2xl p-6 md:p-7 lg:col-span-2">
@@ -206,7 +215,7 @@ export default function DataDesa() {
           </div>
         </div>
         <div className="text-[11.5px] text-mist mt-5">
-          Sumber: Kuesioner Indeks Desa Membangun (IDM) {selectedYear} — sesuaikan dengan hasil pemutakhiran data desa terbaru.
+          Sumber: {IDM_SUMBER[selectedYear]} ({selectedYear}) — sesuaikan dengan hasil pemutakhiran data desa terbaru.
         </div>
 
         {/* ============ Tren Antar Tahun ============ */}

@@ -1,4 +1,4 @@
-import { VILLAGE, IDM_DATA, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_SKOR_2024 } from '../data/village';
+import { VILLAGE, IDM_DATA, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_SKOR_2024, IDM_SUMBER } from '../data/village';
 
 /** Format angka dengan pemisah ribuan gaya Indonesia. */
 const n = (v) => v.toLocaleString('id-ID');
@@ -56,10 +56,17 @@ export function buildDataDesaTables(year) {
     { name: 'Laki-laki', value: r.lk },
     { name: 'Perempuan', value: r.pr },
   ]);
-  const usiaTable = tableFromCategory('Struktur Usia', 'Kelompok Usia', d.usia);
   const pekerjaanTable = tableFromCategory('Mata Pencaharian', 'Jenis Pekerjaan', d.pekerjaan);
 
-  return [ringkasan, genderTable, usiaTable, pekerjaanTable];
+  // Struktur usia dilewati kalau datanya kosong (tahun tertentu bisa saja
+  // tidak punya rincian usia yang andal dari sumbernya — lihat IDM_DATA).
+  const tables = [ringkasan, genderTable];
+  if (d.usia && d.usia.length > 0) {
+    tables.push(tableFromCategory('Struktur Usia', 'Kelompok Usia', d.usia));
+  }
+  tables.push(pekerjaanTable);
+
+  return tables;
 }
 
 /** Format daftar tahun jadi label ringkas: berurutan penuh -> "2021-2024",
@@ -118,6 +125,22 @@ export function buildIdmSkorTable() {
   ];
 }
 
+/** Gabungkan label sumber untuk sekumpulan tahun — kalau semuanya dari
+ *  sumber yang sama, cukup sebut sekali; kalau beda (mis. 2021-2024 dari
+ *  Kuesioner IDM, 2025 dari Prodeskel Kemendagri), sebutkan masing-masing
+ *  beserta tahunnya supaya tidak salah atribusi. */
+function describeSources(years) {
+  const bySource = new Map();
+  years.forEach((y) => {
+    const label = IDM_SUMBER[y] || 'sumber tidak diketahui';
+    if (!bySource.has(label)) bySource.set(label, []);
+    bySource.get(label).push(y);
+  });
+  return [...bySource.entries()]
+    .map(([label, ys]) => `${label} (tahun ${formatYearsLabel(ys)})`)
+    .join('; ');
+}
+
 /** Info identitas desa dipakai di kop laporan.
  *  mode: 'tahun' (satu titik waktu) | 'series' (beberapa tahun berdampingan)
  *  seriesYears: daftar tahun terpilih saat mode === 'series' (bebas dipilih pengguna). */
@@ -129,6 +152,7 @@ export function reportMeta(mode = 'tahun', year = IDM_TAHUN_LIST[IDM_TAHUN_LIST.
   });
   const sortedSeriesYears = [...seriesYears].sort((a, b) => a - b);
   const periode = mode === 'series' ? `Data Tahun ${formatYearsLabel(sortedSeriesYears)}` : `Data Tahun ${year}`;
+  const sumberText = mode === 'series' ? describeSources(sortedSeriesYears) : `${IDM_SUMBER[year]} (tahun ${year})`;
   return {
     judul: 'Laporan Data Makro Desa',
     periode,
@@ -136,7 +160,7 @@ export function reportMeta(mode = 'tahun', year = IDM_TAHUN_LIST[IDM_TAHUN_LIST.
     wilayah: `${VILLAGE.kecamatan}, ${VILLAGE.kabupaten}, ${VILLAGE.provinsi}`,
     tanggal,
     catatan:
-      `Data bersumber dari Kuesioner Indeks Desa Membangun (IDM) tahun ${mode === 'series' ? sortedSeriesYears.join(', ') : year}. ` +
+      `Data bersumber dari ${sumberText}. ` +
       `Data tahun ${IDM_TAHUN_MENYUSUL} menyusul. Sesuaikan dengan hasil pemutakhiran data desa terbaru.`,
   };
 }

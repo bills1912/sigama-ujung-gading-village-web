@@ -15,9 +15,9 @@ export const VILLAGE = {
   tagline: 'Menuju desa mandiri, transparan, dan sejahtera berbasis potensi perkebunan rakyat di kaki Bukit Barisan.',
   kepalaDesa: 'Al Afgani Saparuddin Harahap',
   sambutan: 'Selamat datang di kanal informasi resmi Desa Sigama Ujung Gading. Website ini kami hadirkan sebagai wujud keterbukaan informasi publik — mulai dari agenda kegiatan, struktur pemerintahan, pengelolaan Anggaran Pendapatan dan Belanja Desa (APBDes), produk hukum desa, hingga data kependudukan. Kami mengundang seluruh warga untuk turut memantau dan berpartisipasi dalam pembangunan desa.',
-  // penduduk & luas bersumber dari Kuesioner IDM 2024 (lihat IDM_DATA di bawah);
-  // dusun & tahunBentuk belum tercatat di kuesioner sumber — sesuaikan bila tersedia.
-  stats: { penduduk: 983, luas: 8.5, dusun: 4, tahunBentuk: 1987 },
+  // penduduk & luas bersumber dari Data Pokok Desa (Kemendagri Prodeskel) 2025,
+  // data terbaru yang tersedia; dusun & tahunBentuk dari dokumen Profil Desa 2025.
+  stats: { penduduk: 962, luas: 2.5, dusun: 6, tahunBentuk: 2020 },
   visi: 'Terwujudnya Desa Sigama Ujung Gading yang mandiri secara ekonomi melalui optimalisasi hasil perkebunan rakyat, berpemerintahan bersih dan transparan, serta masyarakat yang guyub dan sejahtera.',
   misi: [
     'Meningkatkan tata kelola pemerintahan desa yang partisipatif, transparan, dan akuntabel.',
@@ -244,8 +244,20 @@ export const JDIH_DOCS = [
    per tahun, bukan dipaksakan sama antar tahun.
 ===================================================================== */
 
-export const IDM_TAHUN_LIST = [2021, 2022, 2023, 2024];
-export const IDM_TAHUN_MENYUSUL = 2025;
+export const IDM_TAHUN_LIST = [2021, 2022, 2023, 2024, 2025];
+export const IDM_TAHUN_MENYUSUL = 2026;
+
+/** Label sumber resmi per tahun — dipakai untuk atribusi yang akurat.
+ *  2021-2024 bersumber dari Kuesioner IDM (BPS/Kemendes); 2025 bersumber
+ *  dari sistem Prodeskel Kemendagri yang formatnya berbeda (lihat catatan
+ *  di IDM_DATA[2025]). */
+export const IDM_SUMBER = {
+  2021: 'Kuesioner Indeks Desa Membangun (IDM)',
+  2022: 'Kuesioner Indeks Desa Membangun (IDM)',
+  2023: 'Kuesioner Indeks Desa Membangun (IDM)',
+  2024: 'Kuesioner Indeks Desa Membangun (IDM)',
+  2025: 'Data Pokok Desa — Sistem Prodeskel, Ditjen Bina Pemdes Kemendagri',
+};
 
 export const IDM_DATA = {
   2021: {
@@ -323,6 +335,32 @@ export const IDM_DATA = {
       { name: 'Pegawai Swasta', value: 15 },
       { name: 'Tenaga Kesehatan', value: 9 },
       { name: 'Lainnya', value: 33 },
+    ],
+  },
+  2025: {
+    // Sumber: Data Pokok Desa & Daftar Isian Tingkat Perkembangan Desa,
+    // sistem Prodeskel Ditjen Bina Pemdes Kemendagri (Bulan 5 Tahun 2025) —
+    // berbeda dari Kuesioner IDM BPS yang dipakai tahun 2021-2024, sehingga
+    // sebagian rincian tidak tersedia dalam bentuk yang sama (lihat catatan usia).
+    ringkasan: { totalPenduduk: 962, lk: 492, pr: 470, kk: 266, kkPerempuan: 53, keluargaMiskin: 48, luasWilayah: 2.5 },
+    // Rincian struktur usia pada dokumen sumber tidak konsisten secara
+    // internal (jumlah kelompok usia jauh melebihi total penduduk — indikasi
+    // kesalahan/bug saat sistem Prodeskel mencetak laporan), sehingga sengaja
+    // dikosongkan daripada menampilkan angka yang jelas keliru. Total
+    // penduduk & jenis kelamin di atas sudah konsisten dan aman dipakai.
+    usia: [],
+    // "Keluarga Miskin" tahun ini memakai proksi "Keluarga Pra Sejahtera"
+    // (klasifikasi kesejahteraan keluarga pada sistem Prodeskel), karena
+    // sistem ini tidak punya field "Keluarga Miskin" langsung seperti
+    // Kuesioner IDM tahun-tahun sebelumnya — definisinya bisa sedikit
+    // berbeda, sesuaikan bila ada angka yang lebih tepat.
+    pekerjaan: [
+      { name: 'Petani/Pekebun', value: 270 },
+      { name: 'Buruh Tani', value: 0 },
+      { name: 'PNS/Aparatur', value: 33 },
+      { name: 'Pegawai Swasta', value: 0 },
+      { name: 'Tenaga Kesehatan', value: 3 },
+      { name: 'Lainnya', value: 42 },
     ],
   },
 };
