@@ -1,4 +1,4 @@
-import { VILLAGE, IDM_DATA, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_SKOR_2024, IDM_SUMBER } from '../data/village';
+import { VILLAGE, IDM_DATA, IDM_TAHUN_LIST, IDM_TAHUN_MENYUSUL, IDM_SKOR_2024, IDM_SUMBER, BSPS_PROGRAM } from '../data/village';
 
 /** Format angka dengan pemisah ribuan gaya Indonesia. */
 const n = (v) => v.toLocaleString('id-ID');
@@ -123,6 +123,37 @@ export function buildIdmSkorTable() {
       rawRows: rows,
     },
   ];
+}
+
+/** Tabel program BSPS (Bedah Rumah) — data agregat saja (lihat catatan
+ *  privasi di BSPS_PROGRAM, src/data/village.js). Tidak terikat tahun
+ *  seperti IDM_DATA — ini snapshot usulan TA 2026, jadi selalu tersedia
+ *  terlepas dari tahun/mode yang sedang dipilih pengguna. */
+export function buildBspsTables() {
+  const r = BSPS_PROGRAM.ringkasan;
+  const ringkasan = {
+    key: 'bsps-ringkasan',
+    sheetName: 'Ringkasan Usulan BSPS',
+    header: ['Indikator', 'Nilai'],
+    rows: [
+      ['Jumlah Calon Penerima', `${n(r.calonPenerima)} orang`],
+      ['Laki-laki', `${n(r.lakiLaki)} orang`],
+      ['Perempuan', `${n(r.perempuan)} orang`],
+      ['Delineasi Wilayah', r.delineasi],
+      ['Pengusul', r.pengusul],
+      ['Riwayat Bantuan Perumahan', r.riwayatBantuan],
+    ],
+    rawRows: [
+      ['Jumlah Calon Penerima', r.calonPenerima],
+      ['Laki-laki', r.lakiLaki],
+      ['Perempuan', r.perempuan],
+      ['Delineasi Wilayah', r.delineasi],
+      ['Pengusul', r.pengusul],
+      ['Riwayat Bantuan Perumahan', r.riwayatBantuan],
+    ],
+  };
+  const desilTable = tableFromCategory('Sebaran Desil Perumahan', 'Kelompok Desil', BSPS_PROGRAM.desil);
+  return [ringkasan, desilTable];
 }
 
 /** Gabungkan label sumber untuk sekumpulan tahun — kalau semuanya dari

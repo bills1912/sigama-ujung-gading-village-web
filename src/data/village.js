@@ -423,6 +423,95 @@ export const IDM_SKOR_2024 = {
   ],
 };
 
+/* =====================================================================
+   PROGRAM BSPS (Bantuan Stimulan Perumahan Swadaya) — "Bedah Rumah"
+   Kolaborasi Desa Cantik (Desa Cinta Statistik) & Program Bedah Rumah,
+   Kabupaten Padang Lawas Utara Tahun Anggaran 2026.
+
+   Sumber: Surat Undangan Dinas Perumahan dan Kawasan Permukiman
+   Kabupaten Padang Lawas Utara Nomor 005/1078/2026 tanggal 10 Juli 2026
+   (menindaklanjuti Surat Perintah Tugas Nomor 41/SPT/FAS.DS/Rb2.7/2026
+   tanggal 7 Juli 2026), perihal Rapat Pembahasan Hasil Usulan BSPS
+   TA.2026 dan Pelaksanaan Kegiatan BSPS Kabupaten Padang Lawas Utara
+   Tahun 2026. Desa Sigama Ujung Gading tercantum sebagai desa ke-3 dari
+   12 desa pada Daftar Undangan (lampiran surat).
+
+   PENTING — PRIVASI: data pengusulan aslinya berbentuk daftar
+   by-name-by-address (nama, NIK, Nomor KK per calon penerima). Di
+   website ini SENGAJA hanya ditampilkan dalam bentuk agregat/ringkasan
+   statistik — nama, NIK, dan Nomor KK perorangan tidak dipublikasikan
+   untuk melindungi privasi warga.
+===================================================================== */
+export const BSPS_PROGRAM = {
+  // Penjelasan program — dipakai di halaman "Tentang Program" agar
+  // pengunjung awam paham apa itu BSPS dan apa itu Desa Cantik sebelum
+  // melihat data/suratnya.
+  tentang: {
+    bsps: 'Bantuan Stimulan Perumahan Swadaya (BSPS), populer disebut "Program Bedah Rumah", adalah bantuan pemerintah berupa dana stimulan dan/atau bahan bangunan bagi Masyarakat Berpenghasilan Rendah (MBR) untuk membangun atau meningkatkan kualitas rumah tidak layak huni menjadi layak huni, disalurkan melalui Kementerian PKP/Dinas Perumahan dan Kawasan Permukiman di daerah.',
+    desaCantik: 'Desa Cinta Statistik (Desa Cantik) adalah program pembinaan Badan Pusat Statistik (BPS) untuk menumbuhkan budaya sadar data di tingkat desa — mendorong pemerintah desa mengelola dan mempublikasikan data desanya sendiri secara terbuka dan akuntabel, salah satunya lewat website resmi desa seperti ini.',
+    kolaborasi: 'Website ini — sebagai wujud nyata semangat Desa Cantik — turut mempublikasikan data agregat usulan Program Bedah Rumah (BSPS) yang melibatkan desa, sehingga warga dapat memantau transparansi penyaluran bantuan perumahan tanpa mengorbankan privasi calon penerima.',
+  },
+  surat: {
+    nomor: '005/1078/2026',
+    sifat: 'Penting',
+    lampiran: '1 (satu) lembar',
+    hal: 'Undangan',
+    tanggal: '10 Juli 2026',
+    tempatTerbit: 'Gunungtua',
+    perihal: 'Rapat Pembahasan Hasil Usulan BSPS TA.2026 dan Pelaksanaan Kegiatan BSPS Kabupaten Padang Lawas Utara Tahun 2026',
+    instansi: 'Dinas Perumahan dan Kawasan Permukiman Kabupaten Padang Lawas Utara',
+    alamatInstansi: 'Jalan Lintas Gunungtua–Langga Payung, Km. 4, Kodepos 22753, Gunungtua',
+    dasar: 'Surat Perintah Tugas Nomor 41/SPT/FAS.DS/Rb2.7/2026 tanggal 7 Juli 2026, ditandatangani oleh Pejabat Pembuat Komitmen Rumah Swadaya dan Pengembangan Kawasan Permukiman 2 Provinsi Sumatera Utara',
+    penandatangan: {
+      nama: 'Nanda Suhaimi Lubis, S.Sos, M.M',
+      jabatan: 'Plt. Kepala Dinas Perumahan dan Kawasan Permukiman Kabupaten Padang Lawas Utara',
+      nip: '19840619 200312 1 006',
+    },
+    rapat: {
+      hari: 'Selasa, 14 Juli 2026',
+      waktu: '09.00 WIB s/d selesai',
+      tempat: 'Aula Dinas Perumahan dan Kawasan Permukiman Kabupaten Padang Lawas Utara',
+      acara: 'Rapat Pembahasan Hasil Usulan BSPS TA.2026 dan Pelaksanaan Kegiatan BSPS Kabupaten Padang Lawas Utara Tahun 2026',
+    },
+    urutanLampiran: 3,
+    totalDesaUndangan: 12,
+  },
+  // Daftar Undangan (Lampiran surat) — daftar 12 desa yang diundang,
+  // informasi publik (bukan data pribadi). Desa kita ditandai `kita: true`.
+  daftarUndangan: [
+    { desa: 'Aek Suhat', kecamatan: 'Padang Bolak' },
+    { desa: 'Gunungtua Tonga', kecamatan: 'Padang Bolak' },
+    { desa: 'Sigama Ujung Gading', kecamatan: 'Padang Bolak', kita: true },
+    { desa: 'Simanosor', kecamatan: 'Padang Bolak' },
+    { desa: 'Aek Tolong', kecamatan: 'Padang Bolak Tenggara' },
+    { desa: 'Sihoda-Hoda', kecamatan: 'Padang Bolak Tenggara' },
+    { desa: 'Siunggam Jae', kecamatan: 'Padang Bolak Tenggara' },
+    { desa: 'Gumarupu Baru', kecamatan: 'Portibi' },
+    { desa: 'Rondaman Lombang', kecamatan: 'Portibi' },
+    { desa: 'Sitopayan', kecamatan: 'Portibi' },
+    { desa: 'Sipaho', kecamatan: 'Halongonan' },
+    { desa: 'Aek Raru', kecamatan: 'Simangambat' },
+  ],
+  ringkasan: {
+    calonPenerima: 43,
+    lakiLaki: 40,
+    perempuan: 3,
+    delineasi: 'Perdesaan',
+    pengusul: 'Pemerintah Daerah (PEMDA)',
+    riwayatBantuan: 'Seluruhnya belum pernah menerima bantuan BSPS, FLPP, maupun BP2BT',
+  },
+  // "Pengelompokan Desil" — kelompok kesejahteraan/backlog perumahan calon
+  // penerima, dari kolom PENGELOMPOKAN DESIL pada data usulan.
+  desil: [
+    { name: 'Tidak Masuk Backlog Perumahan', value: 22 },
+    { name: 'Backlog 2 — Desil 1-4', value: 14 },
+    { name: 'Backlog 1 — Desil 1-4', value: 4 },
+    { name: 'Backlog 2 — Desil 5-10', value: 1 },
+    { name: 'Backlog 1 — Desil 5-10', value: 1 },
+    { name: 'Tidak Terklasifikasi', value: 1 },
+  ],
+};
+
 export const NAV_ITEMS = [
   { to: '/', label: 'Beranda' },
   { to: '/profil', label: 'Profil Desa' },
@@ -430,5 +519,6 @@ export const NAV_ITEMS = [
   { to: '/anggaran', label: 'Anggaran' },
   { to: '/jdih', label: 'JDIH' },
   { to: '/data-desa', label: 'Data Desa' },
+  { to: '/bsps', label: 'Program BSPS' },
   { to: '/kontak', label: 'Kontak' },
 ];

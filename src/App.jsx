@@ -14,6 +14,7 @@ const Agenda = lazy(() => import('./pages/Agenda'));
 const Anggaran = lazy(() => import('./pages/Anggaran'));
 const Jdih = lazy(() => import('./pages/Jdih'));
 const DataDesa = lazy(() => import('./pages/DataDesa'));
+const Bsps = lazy(() => import('./pages/Bsps'));
 const Kontak = lazy(() => import('./pages/Kontak'));
 
 function PageFallback() {
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/anggaran" element={<Anggaran />} />
               <Route path="/jdih" element={<Jdih />} />
               <Route path="/data-desa" element={<DataDesa />} />
+              <Route path="/bsps" element={<Bsps />} />
               <Route path="/kontak" element={<Kontak />} />
             </Routes>
           </Suspense>
